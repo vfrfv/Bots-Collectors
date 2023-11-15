@@ -18,7 +18,7 @@ public class CoinSpawn : MonoBehaviour
         StartCoroutine(Creating());
     }
 
-    public Queue<Coin> GetListCoins()
+    public Queue<Coin> GetCoins()
     {
         return _coins;
     }

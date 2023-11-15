@@ -1,53 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Base : MonoBehaviour
 {
     [SerializeField] private CoinSpawn _coinSpawn;
-    [SerializeField] private Queue<Unit> _units;
+    [SerializeField] private List<Unit> _units;
+    [SerializeField] private Coin _coin;
 
     //public event Action UnitSent;
 
-    private Queue<Coin> _coins;
+    [SerializeField] private Queue<Coin> _coins;
     private Coroutine _coroutine;
+    private Queue<Unit> _unitQueue;
 
-    private void Start()
+    private void Awake()
     {
-        _coinSpawn.OnStartMoveUnit += () =>
+        _unitQueue = new Queue<Unit>(_units);
+    }
+
+    private void Update()
+    {
+        _coins = _coinSpawn.GetCoins();
+
+        if (_coins.Count > 0 && _unitQueue.Count > 0)
         {
-            if (_coroutine != null && _units.Count <= 0)
-            {
-                StopCoroutine(SendUnit(GetUnit(), GetCoin()));
-            }
-            else if (_coroutine == null && _units.Count > 0)
-            {
-                _coroutine = StartCoroutine(SendUnit(GetUnit(), GetCoin()));
-            }
-        };
-    }
+            Debug.Log(_unitQueue.Peek());
+            Debug.Log(_coins.Peek());
 
-    private Coin GetCoin()
-    {
-        _coins = _coinSpawn.GetListCoins();
+            Coin target = _coins.Peek();
 
-        return _coins.Peek();
-    }
+            _unitQueue.Peek().SetTarget(target);
 
-    private Unit GetUnit()
-    {
-        return _units.Peek();
-    }
-
-    private IEnumerator SendUnit(Unit unit, Coin coin)
-    {
-        bool isUnitSent = true;
-
-        while (isUnitSent)
-        {
-            unit.MoveUnit(coin);
-
-            yield return null;
+            _unitQueue.Dequeue();
+            _coins.Dequeue();
         }
     }
 }
