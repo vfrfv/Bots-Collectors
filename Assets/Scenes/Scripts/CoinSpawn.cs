@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CoinSpawn : MonoBehaviour
@@ -9,14 +10,15 @@ public class CoinSpawn : MonoBehaviour
 
     public event Action OnStartMoveUnit;
 
-    private List<Coin> _coins = new List<Coin>();
+    private Queue<Coin> _coins = new Queue<Coin>();
+    private float _maximumNumberCoins = 10;
 
     private void Start()
     {
         StartCoroutine(Creating());
     }
 
-    public List<Coin> GetListCoins()
+    public Queue<Coin> GetListCoins()
     {
         return _coins;
     }
@@ -24,10 +26,9 @@ public class CoinSpawn : MonoBehaviour
     private IEnumerator Creating()
     {
         float dryingTimer = 3;
-        bool IsBeingCreated = true;
         var delaySpawn = new WaitForSeconds(dryingTimer);
 
-        while (IsBeingCreated)
+        for (int i = 0; i < _maximumNumberCoins; i++)       
         {
             float min = 4;
             float max = 10;
@@ -37,7 +38,7 @@ public class CoinSpawn : MonoBehaviour
 
             Coin coin = Instantiate(_coin, new Vector3(psitionX, 0, psitionZ), Quaternion.identity);           
 
-            _coins.Add(coin);
+            _coins.Enqueue(coin);
 
             OnStartMoveUnit?.Invoke();
 
