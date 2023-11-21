@@ -8,8 +8,6 @@ public class CoinSpawn : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
 
-    public event Action OnStartMoveUnit;
-
     private Queue<Coin> _coins = new Queue<Coin>();
     private float _maximumNumberCoins = 10;
 
@@ -39,8 +37,6 @@ public class CoinSpawn : MonoBehaviour
             Coin coin = Instantiate(_coin, new Vector3(psitionX, 0, psitionZ), Quaternion.identity);           
 
             _coins.Enqueue(coin);
-
-            OnStartMoveUnit?.Invoke();
 
             yield return delaySpawn;
         }

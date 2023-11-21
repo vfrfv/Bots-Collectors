@@ -5,13 +5,10 @@ public class Base : MonoBehaviour
 {
     [SerializeField] private CoinSpawn _coinSpawn;
     [SerializeField] private List<Unit> _units;
-    [SerializeField] private Coin _coin;
 
-    //public event Action UnitSent;
-
-    [SerializeField] private Queue<Coin> _coins;
-    private Coroutine _coroutine;
+    private Queue<Coin> _coins;
     private Queue<Unit> _unitQueue;
+    private float _numberCoins = 0;
 
     private void Awake()
     {
@@ -24,15 +21,28 @@ public class Base : MonoBehaviour
 
         if (_coins.Count > 0 && _unitQueue.Count > 0)
         {
-            Debug.Log(_unitQueue.Peek());
-            Debug.Log(_coins.Peek());
+            Unit currentUnit = _unitQueue.Peek();
 
-            Coin target = _coins.Peek();
+            if (currentUnit.IsSent == false)
+            {
+                currentUnit.MoveToTarget(_coins.Peek().transform.position);
+                currentUnit.ChangeStatus();
 
-            _unitQueue.Peek().SetTarget(target);
+                _coins.Dequeue();
+                _unitQueue.Dequeue();
+            }
+        }
+    }
 
-            _unitQueue.Dequeue();
-            _coins.Dequeue();
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Unit>(out Unit unit) && unit.IsSent == true)
+        {
+            unit.ChangeStatus();
+            _unitQueue.Enqueue(unit);
+
+            _numberCoins++;
+            Debug.Log($"Количество монет {_numberCoins}");
         }
     }
 }

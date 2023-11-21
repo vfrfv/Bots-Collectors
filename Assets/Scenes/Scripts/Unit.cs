@@ -1,37 +1,35 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    private float _speed = 2;
+    private float _speed = 3;
+    private Coroutine _coroutine;
 
-    private bool _isSend = false;
-    private Coin _targetCoin;
+    public bool IsSent { get; private set; } = false; 
 
-    private void Update()
+    public void MoveToTarget(Vector3 targetPosition)
     {
-        if(_targetCoin != null)
+        if (_coroutine != null)
         {
-            MoveUnit();
+            StopCoroutine(_coroutine);
         }
+        _coroutine = StartCoroutine(MoveCoroutine(targetPosition));
     }
 
-    public void SetTarget(Coin coin)
+    public void ChangeStatus()
     {
-        _targetCoin = coin;
+        IsSent = !IsSent;
     }
 
-    private void MoveUnit()
+    private IEnumerator MoveCoroutine(Vector3 targetPosition)
     {
-        transform.LookAt(_targetCoin.transform.position);
+        while (transform.position != targetPosition)
+        {
+            transform.LookAt(targetPosition);
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
 
-        transform.position = Vector3.MoveTowards(transform.position, _targetCoin.transform.position, _speed * Time.deltaTime);
-    }
-
-    public void Send()
-    {
-        _isSend = true;
+            yield return null;
+        }
     }
 }
