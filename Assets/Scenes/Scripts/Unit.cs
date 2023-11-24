@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] Collector _collector;
-
     private float _speed = 3;
     private Coroutine _coroutine;
 
@@ -18,8 +16,6 @@ public class Unit : MonoBehaviour
             StopCoroutine(_coroutine);
         }
         _coroutine = StartCoroutine(MoveCoroutine(targetPosition));
-
-        _collector.enabled = false;
     }
 
     public void AssignId(float coinId)
@@ -41,7 +37,5 @@ public class Unit : MonoBehaviour
 
             yield return null;
         }
-
-        _collector.enabled = true;
     }
 }

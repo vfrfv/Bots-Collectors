@@ -7,7 +7,6 @@ public class Collector : MonoBehaviour
     [SerializeField] private Base _base;
 
     private Unit _unit;
-    private bool _isTookCoin = false;
     private Coin _coin;
 
     private void Awake()
@@ -22,7 +21,6 @@ public class Collector : MonoBehaviour
             if (_coin != null)
             {
                 Destroy(_coin.gameObject);
-                _isTookCoin = false;
             }
         }
     }
@@ -36,8 +34,6 @@ public class Collector : MonoBehaviour
             _coin = coin;
 
             _unit.MoveToTarget(_base.transform.position, coin.Id);
-
-            _isTookCoin = true;
         }
     }
 }

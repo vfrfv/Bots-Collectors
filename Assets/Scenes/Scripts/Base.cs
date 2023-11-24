@@ -32,17 +32,15 @@ public class Base : MonoBehaviour
 
             currentUnit.AssignId(currentCoin.Id);
 
-            if (currentUnit.IsSent == false /*&& currentCoin.IsBusy == false*/)
+            if (currentUnit.IsSent == false)
             {
                 currentUnit.MoveToTarget(currentCoin.transform.position, currentUnit.CoinId);
                 currentUnit.ChangeStatus();
 
-                //currentCoin.ChangeStatus();
                 currentCoin.ChangeColor();
 
                 _unitQueue.Dequeue();
                 _allCoins.Dequeue();
-
             }
         }
     }

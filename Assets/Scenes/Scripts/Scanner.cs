@@ -6,7 +6,6 @@ using UnityEngine;
 public class Scanner : MonoBehaviour
 {
     private float _scanRadius = 100;
-
     private Queue<Coin> _coins = new Queue<Coin>();
 
     private void Start()
@@ -27,7 +26,6 @@ public class Scanner : MonoBehaviour
         while (true)
         {
             Scan();
-            //Debug.Log($"ѕроизошло сканирование обнаружено {_coins.Count} монеток");
 
             yield return delayScan;
         }

@@ -8,8 +8,8 @@ public class CoinSpawn : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
 
-    private float _maximumNumberCoins = 20;
-    private float _coinId = 0;
+    private float _maximumNumberCoins = 10;
+    private float _newCoinId = 0;
 
     private void Start()
     {
@@ -30,8 +30,8 @@ public class CoinSpawn : MonoBehaviour
             float psitionZ = UnityEngine.Random.Range(min, max);
 
             Coin coin = Instantiate(_coin, new Vector3(psitionX, 0, psitionZ), Quaternion.identity);
-            _coinId++;
-            coin.AssignId(_coinId);
+            _newCoinId++;
+            coin.AssignId(_newCoinId);
 
             yield return delaySpawn;
         }
