@@ -29,13 +29,14 @@ public class Collector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Coin>(out Coin coin))
+        if (other.TryGetComponent<Coin>(out Coin coin) && _unit.CoinId == coin.Id)
         {
             coin.transform.SetParent(transform);
             coin.GetComponent<BoxCollider>().enabled = false;
             _coin = coin;
 
-            _unit.MoveToTarget(_base.transform.position);
+            _unit.MoveToTarget(_base.transform.position, coin.Id);
+
             _isTookCoin = true;
         }
     }

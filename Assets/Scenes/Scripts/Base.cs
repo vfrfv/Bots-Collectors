@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] private CoinSpawn _coinSpawn;
+    [SerializeField] private Scanner _scanner;
     [SerializeField] private List<Unit> _units;
 
-    private Queue<Coin> _coins;
+    private Queue<Coin> _allCoins = new Queue<Coin>();
     private Queue<Unit> _unitQueue;
     private float _numberCoins = 0;
 
@@ -17,19 +17,32 @@ public class Base : MonoBehaviour
 
     private void Update()
     {
-        _coins = _coinSpawn.GetCoins();
+        Queue<Coin> coins = _scanner.GetCoins();
 
-        if (_coins.Count > 0 && _unitQueue.Count > 0)
+        while (coins.Count > 0)
+        {
+            Coin coin = coins.Dequeue();
+            _allCoins.Enqueue(coin);
+        }
+
+        if (_allCoins.Count > 0 && _unitQueue.Count > 0)
         {
             Unit currentUnit = _unitQueue.Peek();
+            Coin currentCoin = _allCoins.Peek();
 
-            if (currentUnit.IsSent == false)
+            currentUnit.AssignId(currentCoin.Id);
+
+            if (currentUnit.IsSent == false /*&& currentCoin.IsBusy == false*/)
             {
-                currentUnit.MoveToTarget(_coins.Peek().transform.position);
+                currentUnit.MoveToTarget(currentCoin.transform.position, currentUnit.CoinId);
                 currentUnit.ChangeStatus();
 
-                _coins.Dequeue();
+                //currentCoin.ChangeStatus();
+                currentCoin.ChangeColor();
+
                 _unitQueue.Dequeue();
+                _allCoins.Dequeue();
+
             }
         }
     }
@@ -42,7 +55,6 @@ public class Base : MonoBehaviour
             _unitQueue.Enqueue(unit);
 
             _numberCoins++;
-            Debug.Log($"Количество монет {_numberCoins}");
         }
     }
 }

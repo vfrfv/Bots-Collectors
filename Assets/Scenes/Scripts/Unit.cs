@@ -3,18 +3,28 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] Collector _collector;
+
     private float _speed = 3;
     private Coroutine _coroutine;
 
-    public bool IsSent { get; private set; } = false; 
+    public bool IsSent { get; private set; } = false;
+    public float CoinId { get; private set; }
 
-    public void MoveToTarget(Vector3 targetPosition)
+    public void MoveToTarget(Vector3 targetPosition, float id)
     {
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
         }
         _coroutine = StartCoroutine(MoveCoroutine(targetPosition));
+
+        _collector.enabled = false;
+    }
+
+    public void AssignId(float coinId)
+    {
+        CoinId = coinId;
     }
 
     public void ChangeStatus()
@@ -31,5 +41,7 @@ public class Unit : MonoBehaviour
 
             yield return null;
         }
+
+        _collector.enabled = true;
     }
 }

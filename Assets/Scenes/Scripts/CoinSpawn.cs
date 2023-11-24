@@ -8,22 +8,17 @@ public class CoinSpawn : MonoBehaviour
 {
     [SerializeField] private Coin _coin;
 
-    private Queue<Coin> _coins = new Queue<Coin>();
-    private float _maximumNumberCoins = 10;
+    private float _maximumNumberCoins = 20;
+    private float _coinId = 0;
 
     private void Start()
     {
         StartCoroutine(Creating());
     }
 
-    public Queue<Coin> GetCoins()
-    {
-        return _coins;
-    }
-
     private IEnumerator Creating()
     {
-        float dryingTimer = 3;
+        float dryingTimer = 1;
         var delaySpawn = new WaitForSeconds(dryingTimer);
 
         for (int i = 0; i < _maximumNumberCoins; i++)       
@@ -34,9 +29,9 @@ public class CoinSpawn : MonoBehaviour
             float psitionX = UnityEngine.Random.Range(min, max);
             float psitionZ = UnityEngine.Random.Range(min, max);
 
-            Coin coin = Instantiate(_coin, new Vector3(psitionX, 0, psitionZ), Quaternion.identity);           
-
-            _coins.Enqueue(coin);
+            Coin coin = Instantiate(_coin, new Vector3(psitionX, 0, psitionZ), Quaternion.identity);
+            _coinId++;
+            coin.AssignId(_coinId);
 
             yield return delaySpawn;
         }
