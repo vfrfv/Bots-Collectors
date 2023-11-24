@@ -33,7 +33,7 @@ public class Collector : MonoBehaviour
             coin.GetComponent<BoxCollider>().enabled = false;
             _coin = coin;
 
-            _unit.MoveToTarget(_base.transform.position, coin.Id);
+            _unit.MoveToTarget(_base.transform.position);
         }
     }
 }

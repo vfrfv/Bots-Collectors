@@ -34,7 +34,7 @@ public class Base : MonoBehaviour
 
             if (currentUnit.IsSent == false)
             {
-                currentUnit.MoveToTarget(currentCoin.transform.position, currentUnit.CoinId);
+                currentUnit.MoveToTarget(currentCoin.transform.position);
                 currentUnit.ChangeStatus();
 
                 currentCoin.ChangeColor();

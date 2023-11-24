@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     public bool IsSent { get; private set; } = false;
     public float CoinId { get; private set; }
 
-    public void MoveToTarget(Vector3 targetPosition, float id)
+    public void MoveToTarget(Vector3 targetPosition)
     {
         if (_coroutine != null)
         {
