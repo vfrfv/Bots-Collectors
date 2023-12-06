@@ -6,24 +6,31 @@ using UnityEngine;
 public class Scanner : MonoBehaviour
 {
     private float _scanRadius = 100;
-    private Queue<Coin> _coins = new Queue<Coin>();
+    private readonly Queue<Coin> _coins = new Queue<Coin>();
+    private Coroutine _coroutine;
 
     private void Start()
     {
-        StartCoroutine(StartScanner());
+       _coroutine = StartCoroutine(StartScanner());
+    }
+
+    private void OnDestroy()
+    {
+        StopCoroutine(_coroutine);
     }
 
     public Queue<Coin> GetCoins()
     {
-        return _coins;
+        return _coins; 
     }
 
     private IEnumerator StartScanner()
     {
         float scanTimer = 3;
         var delayScan = new WaitForSeconds(scanTimer);
+        bool isScan = true;
 
-        while (true)
+        while (isScan)
         {
             Scan();
 

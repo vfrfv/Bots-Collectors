@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caeb903d682f75044b7fce8ccba00108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coin: {fileID: -1316172859819910555, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
+  _prefabCoin: {fileID: -1316172859819910555, guid: 3e29573f06c0a7e4fa986fff41de17af, type: 3}
 --- !u!4 &606136583
 Transform:
   m_ObjectHideFlags: 0
