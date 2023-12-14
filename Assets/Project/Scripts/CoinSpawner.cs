@@ -5,7 +5,7 @@ public class CoinSpawner : MonoBehaviour
 {
     [SerializeField] private Coin _prefabCoin;
 
-    private float _maximumNumberCoins = 10;
+    [SerializeField] private float _maximumNumberCoins;
     private float _newCoinId = 0;
     private Coroutine _coroutine;
 

@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    [SerializeField] private Base _base;
-
+    //[SerializeField] private Base _base;
+    [SerializeField] private Transform _targetBase;
+   
     private Unit _unit;
     private Coin _coin;
+
 
     private void Awake()
     {
         _unit = GetComponent<Unit>();
+        
     }
 
     private void OnTriggerStay(Collider other)
@@ -33,7 +36,9 @@ public class Collector : MonoBehaviour
             coin.GetComponent<BoxCollider>().enabled = false;
             _coin = coin;
 
-            _unit.MoveToTarget(_base.transform.position);
+            //_unit.MoveToBase();
+            Transform targetBase = _unit.BaseCoordinate;
+            _unit.MoveToTarget(targetBase.position);
         }
     }
 }

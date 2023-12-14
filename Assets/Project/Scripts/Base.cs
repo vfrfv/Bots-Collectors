@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,18 +6,15 @@ using UnityEngine;
 public class Base : MonoBehaviour
 {
     [SerializeField] private Scanner _scanner;
-    [SerializeField] private List<Unit> _units;
+    [SerializeField] private Unit _prefabUnit;
 
-    private Queue<Unit> _unitQueue;
+    private Queue<Unit> _unitQueue = new Queue<Unit>();
     private float _numberCoins = 0;
-
-    private void Awake()
-    {
-        _unitQueue = new Queue<Unit>(_units);
-    }
+    private float _coinsCreateUnit = 3;
 
     private void Start()
     {
+        CreateStartingUnits();
         StartCoroutine(Work());
     }
 
@@ -28,7 +26,7 @@ public class Base : MonoBehaviour
         {
             float coinCheckTimer = 4;
             var checking—oins = new WaitForSeconds(coinCheckTimer);
-         
+
             Queue<Coin> freeCoins = _scanner.GetCoins();
 
             int count = Mathf.Min(freeCoins.Count, _unitQueue.Count);
@@ -64,6 +62,33 @@ public class Base : MonoBehaviour
             _unitQueue.Enqueue(unit);
 
             _numberCoins++;
+        }
+    }
+
+    private void CreateUnit()
+    {
+        Unit newUnit = Instantiate(_prefabUnit, transform.position, Quaternion.identity);
+        newUnit.SetBaseCoordinate(transform);
+        _unitQueue.Enqueue(newUnit);
+    }
+
+    private void CreateStartingUnits()
+    {
+        int numberStartingUnits = 3;
+
+        for (int i = 0; i < numberStartingUnits; i++)
+        {
+            CreateUnit();
+        }
+    }
+
+    private void Update()
+    {
+        if(_numberCoins >= _coinsCreateUnit)
+        {
+            CreateUnit();
+
+            _numberCoins -= _coinsCreateUnit;
         }
     }
 }
