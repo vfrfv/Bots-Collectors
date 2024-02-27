@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
+    public event Action Installed;
+
     [SerializeField] private Scanner _scanner;
     [SerializeField] private Unit _prefabUnit;
 
     private Queue<Unit> _unitQueue = new Queue<Unit>();
     private float _numberCoins = 0;
     private float _coinsCreateUnit = 3;
+    private bool _isFlagSet = false;
+
+    public bool IsFlagSet => _isFlagSet;
 
     private void Start()
     {
@@ -63,6 +68,13 @@ public class Base : MonoBehaviour
 
             _numberCoins++;
         }
+    }
+
+    public void SetFlag()
+    {
+        _isFlagSet = true;
+
+        Installed?.Invoke();
     }
 
     private void CreateUnit()

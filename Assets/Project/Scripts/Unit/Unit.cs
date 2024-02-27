@@ -23,14 +23,14 @@ public class Unit : MonoBehaviour
         _coroutine = StartCoroutine(MoveCoroutine(targetPosition));
     }
 
-    public void MoveToBase()
-    {
-        if (_coroutine != null)
-        {
-            StopCoroutine(_coroutine);
-        }
-        _coroutine = StartCoroutine(MoveCoroutine(_baseCoordinate.position));
-    }
+    //public void MoveToBase()
+    //{
+    //    if (_coroutine != null)
+    //    {
+    //        StopCoroutine(_coroutine);
+    //    }
+    //    _coroutine = StartCoroutine(MoveCoroutine(_baseCoordinate.position));
+    //}
 
     public void AssignId(float coinId)
     {
