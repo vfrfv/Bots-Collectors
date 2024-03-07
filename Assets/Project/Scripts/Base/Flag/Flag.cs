@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Flag : MonoBehaviour
 {
-    public event Action UnitHasArrived;
+    public event Action<Unit> UnitHasArrived;
 
     private bool _isInstalled = false;
     private CapsuleCollider _capsuleCollider;
@@ -24,15 +24,17 @@ public class Flag : MonoBehaviour
         _capsuleCollider.enabled = true;
     }
 
+    public void Retire()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Unit>(out Unit unit))
         {
-            UnitHasArrived?.Invoke();
+            UnitHasArrived?.Invoke(unit);
             _isInstalled = false;
-
-            unit.BuildBase(transform);
-            //Destroy(gameObject);
         }
     }
 }

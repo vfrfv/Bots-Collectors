@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    //[SerializeField] private Base _base;
     [SerializeField] private Transform _targetBase;
    
     private Unit _unit;
@@ -16,17 +15,6 @@ public class Collector : MonoBehaviour
         _unit = GetComponent<Unit>();
         
     }
-
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.TryGetComponent<Base>(out Base bass))
-    //    {
-    //        if (_coin != null)
-    //        {
-    //            Destroy(_coin.gameObject);
-    //        }
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {

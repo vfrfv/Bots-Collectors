@@ -1,26 +1,29 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    public event Action Installed;
+    //public event Action Installed;
 
     [SerializeField] private Scanner _scanner;
     [SerializeField] private Unit _prefabUnit;
+    [SerializeField] private List<Unit> _units;
 
     private Dictionary<StateType, IBaseState> _baseStates;
     private IBaseState _currentState;
 
+    private Unit _unitBuildingNewBase;
     private Queue<Unit> _unitQueue = new Queue<Unit>();
     private Flag _flag;
-    private float _numberCoins = 0; 
+    private float _numberCoins = 0;
 
     public float NumberCoins => _numberCoins;
 
     private void Awake()
     {
+        AddUnitsList();
+
         _flag = GetComponentInChildren<Flag>();
         _baseStates = new Dictionary<StateType, IBaseState>();
 
@@ -32,7 +35,7 @@ public class Base : MonoBehaviour
 
     private void Start()
     {
-        CreateStartingUnits();
+        //CreateStartingUnits();
         StartCoroutine(Work());
     }
 
@@ -82,7 +85,7 @@ public class Base : MonoBehaviour
 
                 currentUnit.AssignId(currentCoin.Id);
 
-                if(_flag.IsInstalled == true)
+                if (_flag.IsInstalled == true)
                 {
                     _currentState = _baseStates[StateType.BuildingBase];
                 }
@@ -103,6 +106,20 @@ public class Base : MonoBehaviour
         }
     }
 
+    public void AddUnitsList()
+    {
+        for (int i = 0; i < _units.Count; i++)
+        {
+            _units[i].SetBaseCoordinate(transform);
+            _unitQueue.Enqueue(_units[i]);
+        }
+    }
+
+    public void AssignUnit(Unit unit)
+    {
+        _unitQueue.Enqueue(unit);
+    }
+
     public void SubtractCoins(int cost)
     {
         _numberCoins -= cost;
@@ -118,15 +135,15 @@ public class Base : MonoBehaviour
 
     public void SendToFlag()
     {
-        //Transform transform = _flag.transform;
         Unit unit = _unitQueue.Dequeue();
-
         unit.MoveToTarget(_flag.transform);
+
+        _unitBuildingNewBase = unit;
     }
 
     public bool HasFreeUnit()
     {
-        if(_unitQueue.Count > 0)
+        if (_unitQueue.Count > 0)
         {
             return true;
         }
@@ -141,7 +158,7 @@ public class Base : MonoBehaviour
         _unitQueue.Enqueue(newUnit);
     }
 
-    private void BackCreatingUnits()
+    private void BackCreatingUnits(Unit unit)
     {
         _currentState = _baseStates[StateType.BildUnits];
     }
@@ -154,5 +171,5 @@ public class Base : MonoBehaviour
         {
             CreateUnit();
         }
-    }   
+    }
 }
