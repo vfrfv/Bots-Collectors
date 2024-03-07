@@ -17,16 +17,16 @@ public class Collector : MonoBehaviour
         
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.TryGetComponent<Base>(out Base bass))
-        {
-            if (_coin != null)
-            {
-                Destroy(_coin.gameObject);
-            }
-        }
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.TryGetComponent<Base>(out Base bass))
+    //    {
+    //        if (_coin != null)
+    //        {
+    //            Destroy(_coin.gameObject);
+    //        }
+    //    }
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -36,9 +36,16 @@ public class Collector : MonoBehaviour
             coin.GetComponent<BoxCollider>().enabled = false;
             _coin = coin;
 
-            //_unit.MoveToBase();
             Transform targetBase = _unit.BaseCoordinate;
-            _unit.MoveToTarget(targetBase.position);
+            _unit.MoveToTarget(targetBase);
+        }
+
+        if (other.TryGetComponent<Base>(out Base bass))
+        {
+            if (_coin != null)
+            {
+                Destroy(_coin.gameObject);
+            }
         }
     }
 }

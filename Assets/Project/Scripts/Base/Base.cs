@@ -10,17 +10,56 @@ public class Base : MonoBehaviour
     [SerializeField] private Scanner _scanner;
     [SerializeField] private Unit _prefabUnit;
 
-    private Queue<Unit> _unitQueue = new Queue<Unit>();
-    private float _numberCoins = 0;
-    private float _coinsCreateUnit = 3;
-    private bool _isFlagSet = false;
+    private Dictionary<StateType, IBaseState> _baseStates;
+    private IBaseState _currentState;
 
-    public bool IsFlagSet => _isFlagSet;
+    private Queue<Unit> _unitQueue = new Queue<Unit>();
+    private Flag _flag;
+    private float _numberCoins = 0; 
+
+    public float NumberCoins => _numberCoins;
+
+    private void Awake()
+    {
+        _flag = GetComponentInChildren<Flag>();
+        _baseStates = new Dictionary<StateType, IBaseState>();
+
+        _baseStates.Add(StateType.BildUnits, new CreationUnitsState(this));
+        _baseStates.Add(StateType.BuildingBase, new BuildingBase(this));
+
+        _currentState = _baseStates[StateType.BildUnits];
+    }
 
     private void Start()
     {
         CreateStartingUnits();
         StartCoroutine(Work());
+    }
+
+    private void OnEnable()
+    {
+        _flag.UnitHasArrived += BackCreatingUnits;
+    }
+
+    private void OnDisable()
+    {
+        _flag.UnitHasArrived -= BackCreatingUnits;
+    }
+
+    private void Update()
+    {
+        _currentState.Run();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Unit>(out Unit unit) && unit.IsSent == true)
+        {
+            unit.ChangeStatus();
+            _unitQueue.Enqueue(unit);
+
+            _numberCoins++;
+        }
     }
 
     private IEnumerator Work()
@@ -43,9 +82,14 @@ public class Base : MonoBehaviour
 
                 currentUnit.AssignId(currentCoin.Id);
 
+                if(_flag.IsInstalled == true)
+                {
+                    _currentState = _baseStates[StateType.BuildingBase];
+                }
+
                 if (currentUnit.IsSent == false)
                 {
-                    currentUnit.MoveToTarget(currentCoin.transform.position);
+                    currentUnit.MoveToTarget(currentCoin.transform);
 
                     currentUnit.ChangeStatus();
                     currentCoin.ChangeColor();
@@ -59,29 +103,47 @@ public class Base : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SubtractCoins(int cost)
     {
-        if (other.TryGetComponent<Unit>(out Unit unit) && unit.IsSent == true)
+        _numberCoins -= cost;
+    }
+
+    public bool HasCoins(int cost)
+    {
+        if (_numberCoins >= cost)
+            return true;
+
+        return false;
+    }
+
+    public void SendToFlag()
+    {
+        //Transform transform = _flag.transform;
+        Unit unit = _unitQueue.Dequeue();
+
+        unit.MoveToTarget(_flag.transform);
+    }
+
+    public bool HasFreeUnit()
+    {
+        if(_unitQueue.Count > 0)
         {
-            unit.ChangeStatus();
-            _unitQueue.Enqueue(unit);
-
-            _numberCoins++;
+            return true;
         }
+
+        return false;
     }
 
-    public void SetFlag()
-    {
-        _isFlagSet = true;
-
-        Installed?.Invoke();
-    }
-
-    private void CreateUnit()
+    public void CreateUnit()
     {
         Unit newUnit = Instantiate(_prefabUnit, transform.position, Quaternion.identity);
         newUnit.SetBaseCoordinate(transform);
         _unitQueue.Enqueue(newUnit);
+    }
+
+    private void BackCreatingUnits()
+    {
+        _currentState = _baseStates[StateType.BildUnits];
     }
 
     private void CreateStartingUnits()
@@ -92,15 +154,5 @@ public class Base : MonoBehaviour
         {
             CreateUnit();
         }
-    }
-
-    private void Update()
-    {
-        if(_numberCoins >= _coinsCreateUnit)
-        {
-            CreateUnit();
-
-            _numberCoins -= _coinsCreateUnit;
-        }
-    }
+    }   
 }

@@ -1,36 +1,39 @@
 using System.Collections;
 using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private Base _prefabBase;
+
     private float _speed = 3;
     private Coroutine _coroutine;
-    //private Base _base;
     private Transform _baseCoordinate;
+    //private MB _mB;
 
     public Transform BaseCoordinate => _baseCoordinate;
     public bool IsSent { get; private set; } = false;
     public float CoinId { get; private set; }
 
-    public void MoveToTarget(Vector3 targetPosition)
+    public void MoveToTarget(Transform target)
     {
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
         }
-        _coroutine = StartCoroutine(MoveCoroutine(targetPosition));
+        _coroutine = StartCoroutine(MoveCoroutine(target));
     }
 
-    //public void MoveToBase()
-    //{
-    //    if (_coroutine != null)
-    //    {
-    //        StopCoroutine(_coroutine);
-    //    }
-    //    _coroutine = StartCoroutine(MoveCoroutine(_baseCoordinate.position));
-    //}
+    public void MoveToBase()
+    {
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
+        _coroutine = StartCoroutine(MoveCoroutine(_baseCoordinate));
+    }
 
     public void AssignId(float coinId)
     {
@@ -42,19 +45,26 @@ public class Unit : MonoBehaviour
         IsSent = !IsSent;
     }
 
-    private IEnumerator MoveCoroutine(Vector3 targetPosition)
+    public void BuildBase(Transform transformNewBase)
     {
-        while (transform.position != targetPosition)
-        {
-            transform.LookAt(targetPosition);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
-
-            yield return null;
-        }
+        Base newBase = Instantiate(_prefabBase, transformNewBase);
+        //_mB.AddBase(newBase);
+        newBase.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
     }
 
     public void SetBaseCoordinate(Transform target)
     {
         _baseCoordinate = target;
+    }
+
+    private IEnumerator MoveCoroutine(Transform target)
+    {
+        while (transform.position != target.position)
+        {
+            transform.LookAt(target.position);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
+
+            yield return null;
+        }
     }
 }

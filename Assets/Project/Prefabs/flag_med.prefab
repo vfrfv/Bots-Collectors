@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 4000013258905692}
   - component: {fileID: 95000012020201790}
   - component: {fileID: -7806176838158964410}
+  - component: {fileID: 5166288782422074293}
   m_Layer: 0
   m_Name: flag_med
   m_TagString: Untagged
@@ -608,3 +609,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9719fd8b86f79df4581f9710fda2114a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &5166288782422074293
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000014124467848}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.49921596, y: 5.1427994, z: 0.43449515}
+  m_Center: {x: 0.030512065, y: 2.0713997, z: -0.04969126}

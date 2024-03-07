@@ -4,11 +4,13 @@ public class BaseFlag : MonoBehaviour
 {
     private GameObject _backlight;
     private GameObject _flag;
+    private Flag _flagBase;
 
     private void Start()
     {
         _flag = GetComponentInChildren<Flag>().gameObject;
         _backlight = GetComponentInChildren<Backlight>().gameObject;
+        _flagBase = GetComponentInChildren<Flag>();
 
         _backlight.SetActive(false);
     }
@@ -31,13 +33,9 @@ public class BaseFlag : MonoBehaviour
                 if (Input.GetMouseButtonDown(1))
                 {
                     _backlight.SetActive(false);
+                    _flagBase.SetFlag();
                 }
             }
         }
     }
-
-    //private void InstantiateFlag(Vector3 position)
-    //{
-    //    GameObject newFlag = Instantiate(_flag, position, Quaternion.identity);
-    //}
 }
