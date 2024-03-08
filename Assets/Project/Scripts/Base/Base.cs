@@ -123,10 +123,7 @@ public class Base : MonoBehaviour
 
     public bool HasCoins(int cost)
     {
-        if (_numberCoins >= cost)
-            return true;
-
-        return false;
+        return _numberCoins >= cost;
     }
 
     public void SendToFlag()
@@ -137,12 +134,7 @@ public class Base : MonoBehaviour
 
     public bool HasFreeUnit()
     {
-        if (_unitQueue.Count > 0)
-        {
-            return true;
-        }
-
-        return false;
+        return _unitQueue.Count > 0;
     }
 
     public void CreateUnit()
