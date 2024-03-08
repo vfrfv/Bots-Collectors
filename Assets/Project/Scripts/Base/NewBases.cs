@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NewBases : MonoBehaviour
@@ -22,6 +21,6 @@ public class NewBases : MonoBehaviour
         unit.SetBaseCoordinate(newBase.transform);
         newBase.AssignUnit(unit);
 
-        _flag.Retire();
+        //_flag.Retire();
     }
 }

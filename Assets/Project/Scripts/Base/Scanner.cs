@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Scanner : MonoBehaviour
@@ -11,7 +10,7 @@ public class Scanner : MonoBehaviour
 
     private void Start()
     {
-       _coroutine = StartCoroutine(StartScanner());
+        _coroutine = StartCoroutine(StartScanner());
     }
 
     private void OnDestroy()
@@ -21,7 +20,7 @@ public class Scanner : MonoBehaviour
 
     public Queue<Coin> GetCoins()
     {
-        return _coins; 
+        return _coins;
     }
 
     private IEnumerator StartScanner()
@@ -46,7 +45,7 @@ public class Scanner : MonoBehaviour
         {
             Coin coin = colliders[i].gameObject.GetComponent<Coin>();
 
-            if(coin != null && coin.IsUnique == true)
+            if (coin != null && coin.IsUnique == true)
             {
                 _coins.Enqueue(coin);
                 coin.ChangeUniqueness();

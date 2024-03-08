@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    //public event Action Installed;
-
     [SerializeField] private Scanner _scanner;
     [SerializeField] private Unit _prefabUnit;
     [SerializeField] private List<Unit> _units;
@@ -13,7 +11,6 @@ public class Base : MonoBehaviour
     private Dictionary<StateType, IBaseState> _baseStates;
     private IBaseState _currentState;
 
-    private Unit _unitBuildingNewBase;
     private Queue<Unit> _unitQueue = new Queue<Unit>();
     private Flag _flag;
     private float _numberCoins = 0;
@@ -35,7 +32,6 @@ public class Base : MonoBehaviour
 
     private void Start()
     {
-        //CreateStartingUnits();
         StartCoroutine(Work());
     }
 
@@ -138,7 +134,10 @@ public class Base : MonoBehaviour
         Unit unit = _unitQueue.Dequeue();
         unit.MoveToTarget(_flag.transform);
 
-        _unitBuildingNewBase = unit;
+        if(unit.transform.position == _flag.transform.position)
+        {
+            _flag.Retire();
+        }
     }
 
     public bool HasFreeUnit()
@@ -161,15 +160,5 @@ public class Base : MonoBehaviour
     private void BackCreatingUnits(Unit unit)
     {
         _currentState = _baseStates[StateType.BildUnits];
-    }
-
-    private void CreateStartingUnits()
-    {
-        int numberStartingUnits = 3;
-
-        for (int i = 0; i < numberStartingUnits; i++)
-        {
-            CreateUnit();
-        }
     }
 }

@@ -5,15 +5,13 @@ using UnityEngine;
 public class Collector : MonoBehaviour
 {
     [SerializeField] private Transform _targetBase;
-   
+
     private Unit _unit;
     private Coin _coin;
-
 
     private void Awake()
     {
         _unit = GetComponent<Unit>();
-        
     }
 
     private void OnTriggerEnter(Collider other)
