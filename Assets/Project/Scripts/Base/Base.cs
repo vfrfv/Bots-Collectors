@@ -133,11 +133,6 @@ public class Base : MonoBehaviour
     {
         Unit unit = _unitQueue.Dequeue();
         unit.MoveToTarget(_flag.transform);
-
-        if(unit.transform.position == _flag.transform.position)
-        {
-            _flag.Retire();
-        }
     }
 
     public bool HasFreeUnit()

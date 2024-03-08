@@ -20,7 +20,5 @@ public class NewBases : MonoBehaviour
         Base newBase = Instantiate(_prefabBase, _flag.transform.position, Quaternion.identity);
         unit.SetBaseCoordinate(newBase.transform);
         newBase.AssignUnit(unit);
-
-        //_flag.Retire();
     }
 }

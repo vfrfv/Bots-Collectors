@@ -33,6 +33,7 @@ public class Flag : MonoBehaviour
         {
             UnitHasArrived?.Invoke(unit);
             _isInstalled = false;
+            _capsuleCollider.enabled = false;
         }
     }
 }
